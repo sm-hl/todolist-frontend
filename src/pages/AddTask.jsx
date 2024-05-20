@@ -27,6 +27,11 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 // alert
 import Alert from '@mui/material/Alert';
+// 
+import PostAddIcon from '@mui/icons-material/PostAdd';
+// 
+import Fab from '@mui/material/Fab';
+import ListIcon from '@mui/icons-material/List';
 
 function Copyright(props) {
   return (
@@ -112,11 +117,18 @@ export default function AddTask() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <PostAddIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             TODOLIST
           </Typography>
+          <Box  sx={{ '& > :not(style)': { m: 1,position: "fixed", right: "2rem", bottom: "3rem" } }}>  
+              <Link href={"/tasks"}>
+                      <Fab color="secondary" aria-label="add">
+                          <ListIcon />
+                      </Fab>
+              </Link>
+          </Box>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             {showAlert && (
                 <Box sx={{ my: 3 }}>

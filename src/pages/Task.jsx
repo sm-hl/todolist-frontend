@@ -1,21 +1,23 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
 // addIcon
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 // alert
 import Alert from '@mui/material/Alert';
+// 
+import { styled } from '@mui/material/styles';
+import { DataGrid } from '@mui/x-data-grid';
+// 
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
 
 function Copyright(props) {
   return (
@@ -32,42 +34,95 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function Task() {
-    const [tasks,setTasks] = useState([]);
+  // 
+  const [rows,setRows] = useState([]);
+  useEffect(()=>{
     fetch('http://127.0.0.1:8001/api/tasks')
     .then((res) => res.json())
     .then((result) =>{
-        setTasks(result);
+      setRows(result);
+      console.log(result);
     })
     .catch(err=>console.log(err))
-    const [showAlert, setShowAlert] = useState(false);
-//   const handleSubmit = (event) => {
+  },[])
 
-//     event.preventDefault();
-//     const data = new FormData(event.currentTarget);
-//     const dataOfTask = {
-//       title: data.get('title'),
-//       description: data.get('description'),
-//       ExecutionDate: data.get('Execution-Date'),
-//       completed: data.get('completed'),
-//       priority: data.get('priority'),
-//       tags: data.get('tags'),
-//     }
-//     // console.log({
-//     //   title: data.get('title'),
-//     //   description: data.get('description'),
-//     //   ExecutionDate: data.get('Execution-Date'),
-//     //   completed: data.get('completed'),
-//     //   priority: data.get('priority'),
-//     //   tags: data.get('tags'),
-//     // });
-    
-//   };
-    const [checked, setChecked] = useState(false);//false to close checkbox - true to open it
+  const columns = [
+    { field: 'completed', headerName: 'Completed', width: 150 },
+    {
+      field: 'title',
+      headerName: 'Title',
+      width: 150,
+    },
+    {
+      field: 'description',
+      headerName: 'Description',
+      width: 150,
+    },
+    {
+      field: 'execution_date',
+      headerName: 'Execution Date',
+      width: 110,
+    },
+    {
+      field: 'priority',
+      headerName: 'Priority',
+      width: 110,
+    },
+    {
+      field: 'tags',
+      headerName: 'Tags',
+      width: 110,
+    },
+  ];
+  
+  // const rows = [
+  //   { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
+  //   { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
+  //   { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
+  //   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
+  //   { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
+  //   { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
+  //   { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
+  //   { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
+  //   { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
+  // ];
+  
+  const HeaderWithIconRoot = styled('div')(({ theme }) => ({
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    '& span': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      marginRight: theme.spacing(0.5),
+    },
+  }));
+  const columnGroupingModel = [
+    {
+      groupId: 'internal_data',
+      headerName: 'Internal',
+      description: '',
+      children: [{ field: 'id' }],
+    },
+    {
+      groupId: 'character',
+      description: 'Information about the character',
+      headerName: 'Basic info',
+      children: [
+        {
+          groupId: 'naming',
+          headerName: 'Names',
+          headerClassName: 'my-super-theme--naming-group',
+          children: [{ field: 'lastName' }, { field: 'firstName' }],
+        },
+        { field: 'age' },
+      ],
+    },
+  ];
+  // 
 
     const handleChangeCheckbox = (id) => {
         // setChecked(event.value);
@@ -94,7 +149,7 @@ export default function Task() {
     };
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      {/* <Container component="main" maxWidth="xs"> */}
         <CssBaseline />
         <Box
           sx={{
@@ -105,87 +160,38 @@ export default function Task() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <AssignmentIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             ALL TASKS
           </Typography>
-            <Box  sx={{ '& > :not(style)': { m: 1,position: "fixed", right: "2rem", bottom: "3rem" } }}>  
-                <Link href={"/"}>
-                        <Fab color="secondary" aria-label="add">
-                            <AddIcon />
-                        </Fab>
-                </Link>
-            </Box>
-          
-          <Box component="form" noValidate sx={{ mt: 3 }}>
-            {showAlert && (
-                    <Box sx={{ my: 3 }}>
-                        <Alert severity="success">
-                            Success! Your changes have been saved.
-                        </Alert>
-                    </Box>
-            )}
-            <Grid container spacing={2}>
-              
-                    {
-                        tasks.map((task,index)=>(
-                            <Grid item xs={12} sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                            }} key={index}>
-                                    <Checkbox sx={{'& .MuiSvgIcon-root': { fontSize: 38 } }}
-                                        // inputProps={{ 'aria-label': 'controlled' }}
-                                        // checked={task.completed}
-                                        // onClick={handleChangeCheckbox(task.id)}
-                                        name={`task${task.id}`}
-                                        id={`task${task.id}`}
-                                    />
-                                <FormControl fullWidth>
-                                    <Box
-                                        // height={200}
-                                        // width={200}
-                                        my={4}
-                                        display="flex"
-                                        alignItems="center"
-                                        gap={4}
-                                        p={2}
-                                        fontSize={'14px'}
-                                        sx={{ border: '2px solid grey' }}
-                                        >
-                                        {`task${task.title}`}<br/>
-                                        {task.completed}
-                                    </Box>
-                                </FormControl>
-                            </Grid>
-                        ))
-                    }
-                
-                {/* <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                /> */}
-             
-            </Grid>
-            {/* <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              ADD Task
-            </Button> */}
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/" variant="body2">
-                    ADD Task
-                </Link>
-              </Grid>
-            </Grid> */}
+          <Box  sx={{ '& > :not(style)': { m: 1,position: "fixed", right: "2rem", bottom: "3rem" } }}>  
+              <Link href={"/"}>
+                      <Fab color="secondary" aria-label="add">
+                          <AddIcon />
+                      </Fab>
+              </Link>
+          </Box>
+          <Box
+            sx={{
+              width: '70%',
+              mt: 3,
+              '& .my-super-theme--naming-group': {
+                backgroundColor: 'rgba(255, 7, 0, 0.55)',
+              },
+            }}
+          >
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              checkboxSelection
+              disableRowSelectionOnClick
+              columnGroupingModel={columnGroupingModel}
+            />
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
+      {/* </Container> */}
     </ThemeProvider>
   );
 }
