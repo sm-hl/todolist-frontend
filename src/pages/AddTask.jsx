@@ -74,7 +74,7 @@ export default function AddTask() {
         //   priority: data.get('priority'),
         //   tags: data.get('tags'),
         // });
-        fetch('http://127.0.0.1:8001/api/tasks/store',{
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks`,{
             method:'post',
             headers: {
                 "Content-type": "application/json; charset=UTF-8"

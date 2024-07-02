@@ -4,6 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -17,7 +18,12 @@ import { styled } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 // 
 import AssignmentIcon from '@mui/icons-material/Assignment';
-
+import Button from '@mui/material/Button';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 function Copyright(props) {
   return (
@@ -40,7 +46,7 @@ export default function Task() {
   // 
   const [rows,setRows] = useState([]);
   useEffect(()=>{
-    fetch('http://127.0.0.1:8001/api/tasks')
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks`)
     .then((res) => res.json())
     .then((result) =>{
       setRows(result);
@@ -48,9 +54,48 @@ export default function Task() {
     })
     .catch(err=>console.log(err))
   },[])
-
+  const handleView = (rowData) => {
+    const id = rowData.id;
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/`+id)
+    .then((res) => res.json())
+    .then((result) =>{
+      
+    })
+    .catch(err=>console.log(err))
+    // Implement logic for viewing using the id
+    console.log('Viewing row with ID:', id);
+  };
+  
+  const handleEdit = (rowData) => {
+    const id = rowData.id;
+    // Implement logic for editing using the id
+    console.log('Editing row with ID:', id);
+  };
+  
+  const handleDelete = (rowData) => {
+    const id = rowData.id;
+    // Implement logic for deleting using the id
+    console.log('Deleting row with ID:', id);
+  };
+  
   const columns = [
-    { field: 'completed', headerName: 'Completed', width: 150 },
+    { field: 'completed', headerName: 'Completed', width: 150,
+      renderCell: (params) => (
+        <div style={{display:"flex", alignItems:"center", height:"100%"}}>
+          {params.row.completed?
+            (<div style={{display:"flex", color:"green"}}>
+              <TaskAltIcon/>
+              <Typography variant="body2" style={{marginLeft:10}}>completed</Typography>
+            </div>)
+            :
+            (<div style={{display:"flex", color:"red"}}>
+              <HighlightOffIcon/>
+              <Typography variant="body2" style={{marginLeft:10}}>not completed</Typography>
+            </div>)
+          }
+        </div>
+      ),
+     },
     {
       field: 'title',
       headerName: 'Title',
@@ -64,7 +109,7 @@ export default function Task() {
     {
       field: 'execution_date',
       headerName: 'Execution Date',
-      width: 110,
+      width: 150,
     },
     {
       field: 'priority',
@@ -75,6 +120,24 @@ export default function Task() {
       field: 'tags',
       headerName: 'Tags',
       width: 110,
+    },
+    {
+      field: 'Actions',
+      headerName: 'Actions',
+      width: 110,
+      renderCell: (params) => (
+        <div>
+          <Button style={{width:"40%"}} size="small" onClick={() => handleView(params.row)}>
+            <VisibilityIcon style={{color:"rgba(156, 39, 176, 1)"}}/>
+          </Button>
+          <Button style={{width:"40%"}} size="small" onClick={() => handleEdit(params.row)}>
+            <EditIcon style={{color:"rgba(156, 39, 176, 1)"}}/>
+          </Button>
+          <Button style={{width:"40%"}} size="small" onClick={() => handleDelete(params.row)}>
+            <DeleteIcon style={{color:"rgba(156, 39, 176, 1)"}}/>
+          </Button>
+        </div>
+      ),
     },
   ];
   
@@ -100,34 +163,13 @@ export default function Task() {
       marginRight: theme.spacing(0.5),
     },
   }));
-  const columnGroupingModel = [
-    {
-      groupId: 'internal_data',
-      headerName: 'Internal',
-      description: '',
-      children: [{ field: 'id' }],
-    },
-    {
-      groupId: 'character',
-      description: 'Information about the character',
-      headerName: 'Basic info',
-      children: [
-        {
-          groupId: 'naming',
-          headerName: 'Names',
-          headerClassName: 'my-super-theme--naming-group',
-          children: [{ field: 'lastName' }, { field: 'firstName' }],
-        },
-        { field: 'age' },
-      ],
-    },
-  ];
+  
   // 
 
     const handleChangeCheckbox = (id) => {
         // setChecked(event.value);
         console.log(document.getElementById('task'+id));
-        // fetch('http://127.0.0.1:8001/api/tasks/update'+id,{
+        // fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/update`+id,{
         //     method:'put',
         //     headers: {
         //         "Content-type": "application/json; charset=UTF-8"
@@ -149,7 +191,7 @@ export default function Task() {
     };
   return (
     <ThemeProvider theme={defaultTheme}>
-      {/* <Container component="main" maxWidth="xs"> */}
+      <Container component="main" >
         <CssBaseline />
         <Box
           sx={{
@@ -174,7 +216,8 @@ export default function Task() {
           </Box>
           <Box
             sx={{
-              width: '70%',
+              width: '100%',
+              height: '400px',
               mt: 3,
               '& .my-super-theme--naming-group': {
                 backgroundColor: 'rgba(255, 7, 0, 0.55)',
@@ -186,12 +229,11 @@ export default function Task() {
               columns={columns}
               checkboxSelection
               disableRowSelectionOnClick
-              columnGroupingModel={columnGroupingModel}
             />
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      {/* </Container> */}
+      </Container>
     </ThemeProvider>
   );
 }
