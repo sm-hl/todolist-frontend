@@ -173,7 +173,7 @@ export default function AddTask() {
                   </LocalizationProvider>
                 </FormControl>
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} style={{display:"flex",alignItems:"center"}}>
                   <InputLabel id="demo-simple-select-label">Completed</InputLabel>
                   <Switch
                     checked={checked}
@@ -196,9 +196,9 @@ export default function AddTask() {
                     onChange={handleChange}
                   >
                     <MenuItem value={''} disabled>--choose an option--</MenuItem>
-                    <MenuItem value={1}>1</MenuItem>
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={3}>3</MenuItem>
+                    <MenuItem value={1}>High</MenuItem>
+                    <MenuItem value={2}>Medium</MenuItem>
+                    <MenuItem value={3}>Low</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -223,6 +223,7 @@ export default function AddTask() {
               type="submit"
               fullWidth
               variant="contained"
+              style={{backgroundColor:"rgba(156, 39, 176, 1)"}}
               sx={{ mt: 3, mb: 2 }}
             >
               ADD Task
