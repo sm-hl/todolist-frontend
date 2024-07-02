@@ -207,7 +207,7 @@ export default function Task() {
           <Typography component="h1" variant="h5">
             ALL TASKS
           </Typography>
-          <Box  sx={{ '& > :not(style)': { m: 1,position: "fixed", right: "2rem", bottom: "3rem" } }}>  
+          <Box  sx={{ '& > :not(style)': { m: 1, zIndex:"100", position: "fixed", right: "2rem", bottom: "3rem" } }}>  
               <Link href={"/"}>
                       <Fab color="secondary" aria-label="add">
                           <AddIcon />
