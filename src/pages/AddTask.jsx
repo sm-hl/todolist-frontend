@@ -133,7 +133,7 @@ export default function AddTask() {
             {showAlert && (
                 <Box sx={{ my: 3 }}>
                     <Alert severity="success">
-                        Success! Your changes have been saved.
+                        Success! Your task is created.
                     </Alert>
                 </Box>
             )}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
+// import Link from "react-router-dom";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -58,15 +59,12 @@ export default function Task() {
       })
       .catch((err) => console.log(err));
   }, []);
-  const handleView = (rowData) => {
-    const id = rowData.id;
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/` + id)
-      .then((res) => res.json())
-      .then((result) => {})
-      .catch((err) => console.log(err));
-    // Implement logic for viewing using the id
-    console.log("Viewing row with ID:", id);
-  };
+  // const handleView = (rowData) => {
+  //   const id = rowData.id;
+    
+  //   // Implement logic for viewing using the id
+  //   console.log("Viewing row with ID:", id);
+  // };
 
   const handleEdit = (rowData) => {
     const id = rowData.id;
@@ -130,10 +128,8 @@ export default function Task() {
             <div style={{ color: "red" }}>High</div>
           ) : params.row.priority === "2" ? (
             <div style={{ color: "orange" }}>Medium</div>
-          ) : params.row.priority === "3" ? (
+          ) : params.row.priority === "3" ?? (
             <div style={{ color: "green" }}>Low</div>
-          ) : (
-            <div style={{ color: "black" }}>Unknown</div>
           )}
         </div>
       ),
@@ -146,30 +142,28 @@ export default function Task() {
     {
       field: "Actions",
       headerName: "Actions",
-      width: 110,
+      width: 120,
       renderCell: (params) => (
         <div>
-          <Button
-            style={{ width: "40%" }}
+          <Link href={`/view-task/${params.id}`}
+            style={{ paddingRight: "20px", cursor: "pointer" }}
             size="small"
-            onClick={() => handleView(params.row)}
           >
-            <VisibilityIcon style={{ color: "rgba(156, 39, 176, 1)" }} />
-          </Button>
-          <Button
-            style={{ width: "40%" }}
+            <VisibilityIcon style={{ color: "rgba(156, 39, 176, 1)", fontSize: "20px" }} />
+          </Link>
+          <Link href={`${process.env.PUBLIC_URL}/view-task/${params.id}`}
+            style={{ paddingRight: "20px", cursor: "pointer" }}
             size="small"
-            onClick={() => handleEdit(params.row)}
           >
-            <EditIcon style={{ color: "rgba(156, 39, 176, 1)" }} />
-          </Button>
-          <Button
-            style={{ width: "40%" }}
+            <EditIcon style={{ color: "rgba(156, 39, 176, 1)", fontSize: "20px" }} />
+          </Link>
+          <span
+            style={{ paddingRight: "20px", cursor: "pointer" }}
             size="small"
             onClick={() => handleDelete(params.row)}
           >
-            <DeleteIcon style={{ color: "rgba(156, 39, 176, 1)" }} />
-          </Button>
+            <DeleteIcon style={{ color: "rgba(156, 39, 176, 1)", fontSize: "20px" }} />
+          </span>
         </div>
       ),
     },
@@ -229,7 +223,7 @@ export default function Task() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            // marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -261,7 +255,7 @@ export default function Task() {
           <Box
             sx={{
               width: "100%",
-              height: "400px",
+              height: "550px",
               mt: 3,
               "& .my-super-theme--naming-group": {
                 backgroundColor: "rgba(255, 7, 0, 0.55)",
