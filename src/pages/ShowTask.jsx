@@ -8,8 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import PostAddIcon from "@mui/icons-material/PostAdd";
-import Fab from "@mui/material/Fab";
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';import Fab from "@mui/material/Fab";
 import ListIcon from "@mui/icons-material/List";
 
 import List from "@mui/material/List";
@@ -51,10 +50,10 @@ export default function ShowTask(params) {
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <PostAddIcon />
+              <AutoStoriesIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              TODOLIST
+              View Task
             </Typography>
             <Box
               sx={{
@@ -83,10 +82,7 @@ export default function ShowTask(params) {
             >
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemIcon>
-                    <StarIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={`Title : ${task.title}`} />
+                  <ListItemText inset primary={`Title : ${task.title}`} />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -104,7 +100,10 @@ export default function ShowTask(params) {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemText inset primary={`Priority : ${task.priority==="1"?'High':task.priority==="2"?'Medium':task.priority==="3"??'Low'}`} />
+                <ListItemIcon>
+                    <StarIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={`Priority : ${task.priority==="1"?'High':task.priority==="2"?'Medium':task.priority==="3"??'Low'}`} />
                 </ListItemButton>
               </ListItem>
             </List>

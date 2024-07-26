@@ -151,7 +151,7 @@ export default function Task() {
           >
             <VisibilityIcon style={{ color: "rgba(156, 39, 176, 1)", fontSize: "20px" }} />
           </Link>
-          <Link href={`${process.env.PUBLIC_URL}/view-task/${params.id}`}
+          <Link href={`/edit-task/${params.id}`}
             style={{ paddingRight: "20px", cursor: "pointer" }}
             size="small"
           >
