@@ -26,7 +26,7 @@ export default function ShowTask(params) {
   const [task, setTask] = useState();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/` + id)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/tasks/${id}`)
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
